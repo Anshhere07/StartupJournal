@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Journal | Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="admin-page">
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Startup Journal Admin.</a>
+            <div class="nav-right">
+                <button class="btn btn-outline" id="adminLogoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content wrapper admin-dashboard">
+        <div class="section-header">
+            <h2>Pending Uploads Moderation</h2>
+            <button class="btn btn-primary" id="refreshPendingBtn"><i data-lucide="refresh-cw"></i> Refresh</button>
+        </div>
+
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Title</th>
+                        <th>Preview</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="pendingPostsTableBody">
+                    <tr><td colspan="5" class="text-center">Loading pending posts...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Post Preview Modal -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content modal-lg">
+            <button class="modal-close" id="closePreviewModal"><i data-lucide="x"></i></button>
+            <h2 class="modal-title">Upload Preview</h2>
+            <div id="previewContent" class="preview-layout">
+                <!-- Injected via JS -->
+            </div>
+            <div class="modal-actions" style="margin-top:2rem; display:flex; gap:1rem; border-top:1px solid var(--border-light); padding-top:1rem;">
+                <button class="btn btn-primary" style="background:var(--accent-blue)" id="previewApproveBtn">Approve Upload</button>
+                <button class="btn btn-primary" style="background:#DC2626" id="previewRejectBtn">Disapprove/Reject</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

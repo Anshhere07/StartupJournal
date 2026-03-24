@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Journal | Latest Tech & Startup News</title>
+    <meta name="description" content="Get the latest news, insights, and analysis from the world of startups, technology, and entrepreneurship.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <!-- Left: Logo -->
+            <a href="index.html" class="logo">Startup Journal.</a>
+
+            <!-- Center: Navigation -->
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="#" class="nav-link">Latest News</a>
+                <a href="#" class="nav-link">Startup News</a>
+                <a href="#" class="nav-link">About Us</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+
+            <!-- Right: Account -->
+            <div class="nav-right">
+                <button class="icon-btn search-btn" aria-label="Search"><i data-lucide="search"></i></button>
+                
+                <!-- Non-logged in state -->
+                <button class="btn btn-outline" id="authBtn">Login</button>
+                
+                <!-- Logged in state (User icon dropdown) -->
+                <div class="user-dropdown" id="userMenu" style="display: none;">
+                    <button class="icon-btn" id="userAvatarBtn" aria-label="Account">
+                        <i data-lucide="user"></i>
+                    </button>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <div class="dropdown-item" style="color: var(--text-tertiary); cursor: default; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; margin-bottom: 0.5rem;" id="userProfileEmail">user@example.com</div>
+                        <button class="dropdown-item" id="navPostNewsBtn">Post News</button>
+                        <button class="dropdown-item" id="navAdminDashboardBtn" style="display: none;">Approve Requests</button>
+                        <button class="dropdown-item" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+
+                <button class="mobile-menu-btn" aria-label="Menu"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+        <!-- Mobile Dropdown Menu -->
+        <div class="mobile-dropdown">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="#" class="nav-link">Latest News</a>
+            <a href="#" class="nav-link">Startup News</a>
+            <a href="#" class="nav-link">About Us</a>
+            <a href="#" class="nav-link">Contact</a>
+            <button class="btn btn-outline" id="mobileAuthBtn" style="margin-top: 1rem;">Login</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section wrapper">
+            <a href="article.html" class="hero-card">
+                <div class="hero-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000" alt="Team working on a startup project" class="hero-image">
+                    <div class="category-badge">Featured</div>
+                </div>
+                <div class="hero-content">
+                    <div class="post-meta">
+                        <span class="author">By Sarah Jenkins</span>
+                        <span class="dot">•</span>
+                        <span class="date">Oct 24, 2026</span>
+                    </div>
+                    <h1 class="hero-title">The Next Era of AI: How Generative Models are Reshaping Enterprise Workflows</h1>
+                    <p class="hero-excerpt">A deep dive into the integration of large language models within traditional corporate structures, improving productivity and raising new questions about data security.</p>
+                </div>
+            </a>
+        </section>
+
+        <!-- Main Layout: Grid + Sidebar -->
+        <div class="content-layout wrapper">
+            <!-- Latest News Grid -->
+            <section class="latest-news">
+                <div class="section-header">
+                    <h2>Latest News</h2>
+                    <a href="#" class="view-all">View All <i data-lucide="arrow-right"></i></a>
+                </div>
+                
+                <!-- Dynamic Posts Container -->
+                <div class="news-grid" id="dynamicNewsGrid">
+                    <!-- Cards will be populated here via JS -->
+                    <div class="empty-state">
+                        <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
+                        Fetching latest stories...
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Trending Now</h3>
+                    <ul class="trending-list">
+                        <li>
+                            <span class="trending-number">1</span>
+                            <div class="trending-content">
+                                <h4><a href="article.html">Silicon Valley's New Interest in Hard Tech</a></h4>
+                                <span class="date">Oct 24, 2026</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="trending-number">2</span>
+                            <div class="trending-content">
+                                <h4><a href="article.html">Why Venture Capitalists Are Looking Towards Africa</a></h4>
+                                <span class="date">Oct 22, 2026</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="trending-number">3</span>
+                            <div class="trending-content">
+                                <h4><a href="article.html">The End of the Zero-Interest Rate Phenomenon</a></h4>
+                                <span class="date">Oct 21, 2026</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget newsletter-widget">
+                    <div class="newsletter-icon"><i data-lucide="mail"></i></div>
+                    <h3>Subscribe to Our Newsletter</h3>
+                    <p>Get the latest news directly to your inbox daily.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!')">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content wrapper">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">Startup Journal.</a>
+                <p>Delivering premium insights and breaking news from the global startup ecosystem.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="link-column">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="link-column">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom wrapper">
+            <p>&copy; 2026 Startup Journal. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <!-- ==========================================
+         MODALS
+         ========================================== -->
+         
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeAuthBtn"><i data-lucide="x"></i></button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title">Welcome</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Join Startup Journal community.</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="loginTab">Login</button>
+                <button class="tab-btn" data-tab="signupTab">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="tab-pane active" id="loginTab">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="loginSubmitBtn">
+                        <span class="btn-text">Login</span>
+                        <div class="spinner" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="tab-pane" id="signupTab">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Create a password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="signupSubmitBtn">
+                        <span class="btn-text">Create Account</span>
+                        <div class="spinner" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post News Modal -->
+    <div class="modal-overlay" id="postModal">
+        <div class="modal-container lg">
+            <button class="modal-close" id="closePostBtn"><i data-lucide="x"></i></button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title">Submit News</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Share a startup story. It will be reviewed by our moderators.</p>
+            </div>
+
+            <form id="postNewsForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="Enter headline..." required>
+                </div>
+                <div class="form-group">
+                    <label>Description (Rich Text)</label>
+                    <textarea name="description" class="form-control" placeholder="Write your article content here..." required></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Upload Image <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                        <input type="file" id="imageFileInput" accept="image/jpeg, image/png, image/webp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Video <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                        <input type="file" id="videoFileInput" accept="video/mp4, video/webm" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Media Caption <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                    <input type="text" name="caption" class="form-control" placeholder="Photo/Video caption...">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" id="cancelPostBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="postSubmitBtn">
+                        <span class="btn-text">Submit for Review</span>
+                        <div class="spinner" style="display: none;"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
