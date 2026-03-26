@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startup Journal | Latest Tech & Startup News</title>
-    <meta name="description" content="Get the latest news, insights, and analysis from the world of startups, technology, and entrepreneurship.">
+    <meta name="description"
+        content="Get the latest news, insights, and analysis from the world of startups, technology, and entrepreneurship.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
     <!-- Navbar -->
     <header class="navbar">
@@ -32,19 +37,22 @@
             <!-- Right: Account -->
             <div class="nav-right">
                 <button class="icon-btn search-btn" aria-label="Search"><i data-lucide="search"></i></button>
-                
+
                 <!-- Non-logged in state -->
                 <button class="btn btn-outline" id="authBtn">Login</button>
-                
+
                 <!-- Logged in state (User icon dropdown) -->
                 <div class="user-dropdown" id="userMenu" style="display: none;">
                     <button class="icon-btn" id="userAvatarBtn" aria-label="Account">
                         <i data-lucide="user"></i>
                     </button>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <div class="dropdown-item" style="color: var(--text-tertiary); cursor: default; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; margin-bottom: 0.5rem;" id="userProfileEmail">user@example.com</div>
+                        <div class="dropdown-item"
+                            style="color: var(--text-tertiary); cursor: default; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; margin-bottom: 0.5rem;"
+                            id="userProfileEmail">user@example.com</div>
                         <button class="dropdown-item" id="navPostNewsBtn">Post News</button>
-                        <button class="dropdown-item" id="navAdminDashboardBtn" style="display: none;">Approve Requests</button>
+                        <button class="dropdown-item" id="navAdminDashboardBtn" style="display: none;">Approve
+                            Requests</button>
                         <button class="dropdown-item" id="logoutBtn">Logout</button>
                     </div>
                 </div>
@@ -80,12 +88,13 @@
                     <h2>Latest News</h2>
                     <a href="#" class="view-all">View All <i data-lucide="arrow-right"></i></a>
                 </div>
-                
+
                 <!-- Dynamic Posts Container -->
                 <div class="news-grid" id="dynamicNewsGrid">
                     <!-- Cards will be populated here via JS -->
                     <div class="empty-state">
-                        <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
+                        <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;">
+                        </div>
                         Fetching latest stories...
                     </div>
                 </div>
@@ -100,21 +109,21 @@
                             <span class="trending-number">1</span>
                             <div class="trending-content">
                                 <h4><a href="article.html">Silicon Valley's New Interest in Hard Tech</a></h4>
-                                <span class="date">Oct 24, 2026</span>
+                                <span class="date">Oct 24, 2025</span>
                             </div>
                         </li>
                         <li>
                             <span class="trending-number">2</span>
                             <div class="trending-content">
                                 <h4><a href="article.html">Why Venture Capitalists Are Looking Towards Africa</a></h4>
-                                <span class="date">Oct 22, 2026</span>
+                                <span class="date">Oct 22, 2025</span>
                             </div>
                         </li>
                         <li>
                             <span class="trending-number">3</span>
                             <div class="trending-content">
                                 <h4><a href="article.html">The End of the Zero-Interest Rate Phenomenon</a></h4>
-                                <span class="date">Oct 21, 2026</span>
+                                <span class="date">Oct 21, 2025</span>
                             </div>
                         </li>
                     </ul>
@@ -138,7 +147,8 @@
         <div class="footer-content wrapper">
             <div class="footer-brand">
                 <a href="index.html" class="logo-wrapper" style="margin-bottom: 1rem; display: block;">
-                    <img src="assets/logo.png" alt="Startup Journal" class="logo-img" style="filter: brightness(0) invert(1);">
+                    <img src="assets/logo.png" alt="Startup Journal" class="logo-img"
+                        style="filter: brightness(0) invert(1);">
                 </a>
                 <p>Delivering premium insights and breaking news from the global startup ecosystem.</p>
                 <div class="social-links">
@@ -168,12 +178,12 @@
     <!-- ==========================================
          MODALS
          ========================================== -->
-         
+
     <!-- Auth Modal -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-container">
             <button class="modal-close" id="closeAuthBtn"><i data-lucide="x"></i></button>
-            
+
             <div class="modal-header">
                 <h2 class="modal-title">Welcome</h2>
                 <p style="color: var(--text-secondary); font-size: 0.95rem;">Join Startup Journal community.</p>
@@ -195,7 +205,8 @@
                         <label>Password</label>
                         <input type="password" name="password" class="form-control" placeholder="••••••••" required>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="loginSubmitBtn">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;"
+                        id="loginSubmitBtn">
                         <span class="btn-text">Login</span>
                         <div class="spinner" style="display: none;"></div>
                     </button>
@@ -211,9 +222,11 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" name="password" class="form-control" placeholder="Create a password" required minlength="6">
+                        <input type="password" name="password" class="form-control" placeholder="Create a password"
+                            required minlength="6">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="signupSubmitBtn">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;"
+                        id="signupSubmitBtn">
                         <span class="btn-text">Create Account</span>
                         <div class="spinner" style="display: none;"></div>
                     </button>
@@ -226,10 +239,11 @@
     <div class="modal-overlay" id="postModal">
         <div class="modal-container lg">
             <button class="modal-close" id="closePostBtn"><i data-lucide="x"></i></button>
-            
+
             <div class="modal-header">
                 <h2 class="modal-title">Submit News</h2>
-                <p style="color: var(--text-secondary); font-size: 0.95rem;">Share a startup story. It will be reviewed by our moderators.</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Share a startup story. It will be reviewed
+                    by our moderators.</p>
             </div>
 
             <form id="postNewsForm">
@@ -239,19 +253,24 @@
                 </div>
                 <div class="form-group">
                     <label style="font-weight: 500;">Description</label>
-                    <textarea name="description" class="form-control" placeholder="Write the content here..." required rows="4"></textarea>
+                    <textarea name="description" class="form-control" placeholder="Write the content here..." required
+                        rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label style="font-weight: 500;">Hashtags <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                    <label style="font-weight: 500;">Hashtags <span
+                            style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
                     <input type="text" name="caption" class="form-control" placeholder="#startup #tech #funding">
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
                     <div class="form-group" style="margin-bottom:0;">
-                        <label style="font-weight: 500;">Image <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
-                        <input type="file" id="imageFileInput" accept="image/jpeg, image/png, image/webp" class="form-control">
+                        <label style="font-weight: 500;">Image <span
+                                style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                        <input type="file" id="imageFileInput" accept="image/jpeg, image/png, image/webp"
+                            class="form-control">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label style="font-weight: 500;">Video <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                        <label style="font-weight: 500;">Video <span
+                                style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
                         <input type="file" id="videoFileInput" accept="video/mp4, video/webm" class="form-control">
                     </div>
                 </div>
@@ -272,4 +291,5 @@
         lucide.createIcons();
     </script>
 </body>
+
 </html>
