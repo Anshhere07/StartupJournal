@@ -177,29 +177,29 @@
 
             <form id="postNewsForm">
                 <div class="form-group">
-                    <label>Title</label>
+                    <label style="font-weight: 500;">Heading of Post</label>
                     <input type="text" name="title" class="form-control" placeholder="Enter headline..." required>
                 </div>
                 <div class="form-group">
-                    <label>Description (Rich Text)</label>
-                    <textarea name="description" class="form-control" placeholder="Write your article content here..." required></textarea>
+                    <label style="font-weight: 500;">Description</label>
+                    <textarea name="description" class="form-control" placeholder="Write the content here..." required rows="4"></textarea>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>Upload Image <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                <div class="form-group">
+                    <label style="font-weight: 500;">Hashtags <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                    <input type="text" name="caption" class="form-control" placeholder="#startup #tech #funding">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label style="font-weight: 500;">Image <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
                         <input type="file" id="imageFileInput" accept="image/jpeg, image/png, image/webp" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label>Upload Video <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label style="font-weight: 500;">Video <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
                         <input type="file" id="videoFileInput" accept="video/mp4, video/webm" class="form-control">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Media Caption <span style="font-weight:normal;color:#9ca3af">(Optional)</span></label>
-                    <input type="text" name="caption" class="form-control" placeholder="Photo/Video caption...">
-                </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                <div style="display: flex; justify-content: flex-end; gap: 1rem;">
                     <button type="button" class="btn btn-outline" id="cancelPostBtn">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="postSubmitBtn">
                         <span class="btn-text">Submit for Review</span>

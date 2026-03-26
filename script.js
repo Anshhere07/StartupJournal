@@ -182,6 +182,32 @@ function updateNavbarAuthUI() {
         if (userMenu) userMenu.style.display = 'none';
     }
 
+    const mobileDropdown = document.querySelector('.mobile-dropdown');
+    document.querySelectorAll('.mobile-user-link').forEach(el => el.remove());
+    
+    if (currentUser && mobileDropdown) {
+        mobileDropdown.insertAdjacentHTML('beforeend', `
+            <div class="mobile-user-link" style="border-top: 1px solid var(--border-light); padding-top: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+                <div style="color: var(--text-tertiary); font-size: 0.9rem;">Signed in as <b>${currentUser.email}</b></div>
+                <a href="#" class="nav-link" id="mobilePostBtn">Post News</a>
+                ${currentUser.role === 'admin' ? '<a href="admin.html" class="nav-link">Approve Requests</a>' : ''}
+                <button class="btn btn-outline" id="mobileLogoutBtn" style="color: var(--error); border-color: var(--error); width: fit-content;">Logout</button>
+            </div>
+        `);
+        document.getElementById('mobilePostBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileDropdown.classList.remove('is-open');
+            const icon = document.querySelector('.mobile-menu-btn i');
+            if(icon) icon.setAttribute('data-lucide', 'menu');
+            refreshIcons();
+            document.getElementById('postModal').classList.add('show');
+        });
+        document.getElementById('mobileLogoutBtn').addEventListener('click', () => {
+            const logout = document.getElementById('logoutBtn');
+            if(logout) logout.click();
+        });
+    }
+
     const userAvatarBtn = document.getElementById('userAvatarBtn');
     const userDropdownMenu = document.getElementById('userDropdownMenu');
     
@@ -533,41 +559,65 @@ function renderSinglePostHTML(post, container) {
          }
     }
 
+    let imgBlock = '';
+    if (image && !image.includes('images.unsplash.com')) {
+        imgBlock = `
+            <figure style="margin: 2rem 0 0 0; border-radius: 8px; overflow: hidden; background: transparent; display: flex; justify-content: center;">
+                <img src="${image}" alt="Article Image" style="width: 100%; height: auto; max-height: 80vh; object-fit: contain;">
+            </figure>
+        `;
+    }
+
     container.innerHTML = `
-        <header class="article-header">
-            <div class="category-badge">Startup News</div>
-            <h1 class="article-title">${post.title}</h1>
-            <p class="article-subtitle">${post.caption || ''}</p>
-            
-            <div class="article-meta">
-                <div class="author-info">
-                    <div class="author-details">
-                        <span class="author-name">By ${post.userEmail}</span>
-                    </div>
-                </div>
-                <div class="publish-info">
-                    <span class="date">Published ${dateStr}</span>
-                </div>
-                <div class="share-actions">
-                    <button class="icon-btn" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(window.location.href), '_blank')"><i data-lucide="twitter"></i></button>
-                    <button class="icon-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(window.location.href), '_blank')"><i data-lucide="linkedin"></i></button>
-                    <button class="icon-btn" aria-label="Copy Link" onclick="navigator.clipboard.writeText(window.location.href); showToast('Link copied!')"><i data-lucide="link"></i></button>
-                </div>
+        <div class="linkedin-post-card" style="background: white; border: 1px solid var(--border-light); border-radius: 12px; padding: clamp(1.5rem, 5vw, 4rem); max-width: 800px; margin: 2rem auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+            <!-- LinkedIn Style Badge -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <span style="display: inline-block; padding: 0.25rem 1rem; border: 1px solid var(--accent-primary); color: var(--accent-primary); border-radius: 4px; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px;">Startup News</span>
             </div>
-        </header>
-
-        <figure class="article-featured-image">
-            <img src="${image}" alt="Article Image">
-        </figure>
-
-        <div class="article-body">
-            <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-primary); white-space: pre-wrap;">${post.description}</div>
+            
+            <!-- LinkedIn Style Heavy Title -->
+            <h1 style="font-family: var(--font-serif); font-size: clamp(1.75rem, 4vw, 2.8rem); color: var(--accent-primary); line-height: 1.2; text-align: center; margin-bottom: 2rem; font-weight: 700;">
+                ${post.title}
+            </h1>
+            
+            <!-- Description -->
+            <div style="font-size: 1.15rem; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap; margin-bottom: 1.5rem; text-align: left;">${post.description}</div>
+            
+            <!-- Hashtags -->
+            ${post.caption ? `<div style="font-size: 1.1rem; color: var(--accent-blue); font-weight: 500; text-align: left; margin-bottom: 2rem;">${post.caption}</div>` : ''}
+            
+            <!-- Media at the end -->
+            ${imgBlock}
             ${vidBlock}
         </div>
     `;
+
+    if (currentUser && currentUser.role === 'admin') {
+        container.innerHTML += `
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px dashed var(--error); text-align: center;">
+                <button class="btn btn-outline" style="color: var(--error); border-color: var(--error);" onclick="deleteActivePost('${post.id}')">
+                    <i data-lucide="trash-2"></i> Delete This Article
+                </button>
+            </div>
+        `;
+    }
+
     document.title = `${post.title} | Startup Journal`;
     refreshIcons();
 }
+
+window.deleteActivePost = async function(id) {
+    if(!confirm("Are you sure you want to permanently delete this article?")) return;
+    
+    // Reverse the approval state by pushing to Reject, removing it from frontend display.
+    const response = await fetchAPI('rejectPost', { postId: id, isAdmin: true });
+    if(response.success) {
+        showToast("Article deleted successfully.");
+        setTimeout(() => window.location.href = 'index.html', 1500);
+    } else {
+        showToast("Failed to delete article.", "error");
+    }
+};
 
 // -----------------------------------------
 // Admin Dashboard Logic
@@ -732,7 +782,7 @@ function initContactForm() {
         data.action = 'submitContact';
         
         try {
-            const CONTACT_API_URL = 'https://script.google.com/macros/s/AKfycbypseFUFJ49sy-Vh6udFIbSwLkqzFovboNpbPr4axg_krQbl-RzN8NhPjIuXrFAzhHXTA/exec';
+            const CONTACT_API_URL = 'https://script.google.com/macros/s/AKfycbzZN5F3266otJYN0qLfaWBO0XF49Y1G_wwYdO8LNEZuRTzGUhQGhTuDNildbhL88vVo8A/exec';
             const response = await fetch(CONTACT_API_URL, {
                 method: 'POST',
                 body: JSON.stringify(data),
