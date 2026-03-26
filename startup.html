@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article | Startup Journal</title>
+    <title>Startup News | Startup Journal</title>
     <meta name="description" content="Get the latest news, insights, and analysis from the world of startups, technology, and entrepreneurship.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,14 +65,31 @@
 
     <main class="main-content">
 
-    <!-- Dynamic Article Container -->
-    <article class="single-article article-page wrapper" id="dynamicArticleContainer" style="max-width: 900px;">
-        <!-- Loading State -->
-        <div class="empty-state" style="border:none; padding:4rem 0;">
-            <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
-            <p>Loading article...</p>
-        </div>
-    </article>
+    <div class="content-layout wrapper" style="margin-top: 2rem;">
+        <section class="latest-news">
+            <div class="section-header">
+                <h2>Startup News</h2>
+            </div>
+            <div class="news-grid" id="dynamicNewsGrid">
+                <div class="empty-state">
+                    <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
+                    Fetching stories...
+                </div>
+            </div>
+        </section>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-widget newsletter-widget">
+                <div class="newsletter-icon"><i data-lucide="mail"></i></div>
+                <h3>Subscribe to Our Newsletter</h3>
+                <p>Get the latest news directly to your inbox daily.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!')">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </aside>
+    </div>
 
 </main>
 

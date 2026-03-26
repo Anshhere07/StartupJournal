@@ -16,15 +16,17 @@
     <header class="navbar">
         <div class="nav-container">
             <!-- Left: Logo -->
-            <a href="index.html" class="logo">Startup Journal.</a>
+            <a href="index.html" class="logo-wrapper">
+                <img src="assets/logo.png" alt="Startup Journal" class="logo-img">
+            </a>
 
             <!-- Center: Navigation -->
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link active">Home</a>
-                <a href="#" class="nav-link">Latest News</a>
-                <a href="#" class="nav-link">Startup News</a>
-                <a href="#" class="nav-link">About Us</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="latest.html" class="nav-link">Latest News</a>
+                <a href="startup.html" class="nav-link">Startup News</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="contact.html" class="nav-link">Contact</a>
             </nav>
 
             <!-- Right: Account -->
@@ -53,32 +55,21 @@
         <!-- Mobile Dropdown Menu -->
         <div class="mobile-dropdown">
             <a href="index.html" class="nav-link active">Home</a>
-            <a href="#" class="nav-link">Latest News</a>
-            <a href="#" class="nav-link">Startup News</a>
-            <a href="#" class="nav-link">About Us</a>
-            <a href="#" class="nav-link">Contact</a>
+            <a href="latest.html" class="nav-link">Latest News</a>
+            <a href="startup.html" class="nav-link">Startup News</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="contact.html" class="nav-link">Contact</a>
             <button class="btn btn-outline" id="mobileAuthBtn" style="margin-top: 1rem;">Login</button>
         </div>
     </header>
 
     <main class="main-content">
         <!-- Hero Section -->
-        <section class="hero-section wrapper">
-            <a href="article.html" class="hero-card">
-                <div class="hero-image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000" alt="Team working on a startup project" class="hero-image">
-                    <div class="category-badge">Featured</div>
-                </div>
-                <div class="hero-content">
-                    <div class="post-meta">
-                        <span class="author">By Sarah Jenkins</span>
-                        <span class="dot">•</span>
-                        <span class="date">Oct 24, 2026</span>
-                    </div>
-                    <h1 class="hero-title">The Next Era of AI: How Generative Models are Reshaping Enterprise Workflows</h1>
-                    <p class="hero-excerpt">A deep dive into the integration of large language models within traditional corporate structures, improving productivity and raising new questions about data security.</p>
-                </div>
-            </a>
+        <section class="hero-section wrapper" id="dynamicHeroSection">
+            <!-- Dynamic Latest News will be populated here via script.js -->
+            <div class="empty-state" style="border:none; background:transparent;">
+                <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
+            </div>
         </section>
 
         <!-- Main Layout: Grid + Sidebar -->
@@ -146,7 +137,9 @@
     <footer class="footer">
         <div class="footer-content wrapper">
             <div class="footer-brand">
-                <a href="index.html" class="logo">Startup Journal.</a>
+                <a href="index.html" class="logo-wrapper" style="margin-bottom: 1rem; display: block;">
+                    <img src="assets/logo.png" alt="Startup Journal" class="logo-img" style="filter: brightness(0) invert(1);">
+                </a>
                 <p>Delivering premium insights and breaking news from the global startup ecosystem.</p>
                 <div class="social-links">
                     <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
@@ -156,8 +149,8 @@
             <div class="footer-links">
                 <div class="link-column">
                     <h4>Company</h4>
-                    <a href="#">About Us</a>
-                    <a href="#">Contact</a>
+                    <a href="about.html">About Us</a>
+                    <a href="contact.html">Contact</a>
                 </div>
                 <div class="link-column">
                     <h4>Legal</h4>

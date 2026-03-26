@@ -126,9 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initUI();
     initModals();
     initForms();
+    initContactForm();
 
     if (document.querySelector('.admin-page')) {
         initAdminDashboard();
+    } else if (document.querySelector('.article-page')) {
+        renderArticlePage();
     } else {
         fetchDynamicPosts(); 
     }
@@ -343,28 +346,105 @@ async function handlePostSubmit(data, btnId) {
 // -----------------------------------------
 // Main Page Rendering
 // -----------------------------------------
+// Helper to fix Google Drive View URLs to direct Image URLs properly compatible with img tags
+function getDirectDriveUrl(url) {
+    if (!url) return '';
+    if (url.includes('drive.google.com/file/d/')) {
+        const match = url.match(/\/d\/(.+?)\//);
+        if (match && match[1]) {
+            return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`;
+        }
+    }
+    return url;
+}
+
 async function fetchDynamicPosts() {
     const grid = document.getElementById('dynamicNewsGrid');
-    if (!grid) return;
+    const hero = document.getElementById('dynamicHeroSection');
+    if (!grid && !hero) return;
+
+    let hasRenderedCache = false;
+    const cachedPostsJSON = localStorage.getItem('sj_posts_cache');
+    if (cachedPostsJSON) {
+        try {
+            const cachedPosts = JSON.parse(cachedPostsJSON);
+            if (cachedPosts && cachedPosts.length > 0) {
+                renderParsedPosts(cachedPosts, hero, grid);
+                hasRenderedCache = true;
+            }
+        } catch(e) {}
+    }
 
     try {
         const response = await fetchAPI('getPosts');
-        if (response.success && response.posts && response.posts.length > 0) {
-            grid.innerHTML = '';
-            response.posts.forEach(post => grid.appendChild(createNewsCard(post)));
-            refreshIcons();
-        } else {
-            grid.innerHTML = `<div class="empty-state">No approved uploads found right now.</div>`;
+        if (response.success && response.posts) {
+            localStorage.setItem('sj_posts_cache', JSON.stringify(response.posts));
+            renderParsedPosts(response.posts, hero, grid);
+        } else if (!hasRenderedCache) {
+            if (grid) grid.innerHTML = `<div class="empty-state">No approved uploads found right now.</div>`;
+            if (hero) hero.style.display = 'none';
         }
     } catch (e) {
-        grid.innerHTML = `<div class="empty-state" style="color:var(--error)">Error loading uploads.</div>`;
+        if (!hasRenderedCache) {
+            if (grid) grid.innerHTML = `<div class="empty-state" style="color:var(--error)">Error loading uploads.</div>`;
+            if (hero) hero.style.display = 'none';
+        }
     }
+}
+
+function renderParsedPosts(posts, hero, grid) {
+    if (hero && posts.length > 0) {
+        hero.innerHTML = createHeroCardHTML(posts[0]);
+    }
+    
+    let gridPosts = posts;
+    if (hero && posts.length > 0) {
+        gridPosts = posts.slice(1);
+    }
+
+    if (grid) {
+        grid.innerHTML = '';
+        if (gridPosts.length > 0) {
+            gridPosts.forEach(post => grid.appendChild(createNewsCard(post)));
+        } else {
+            grid.innerHTML = `<div class="empty-state">No other stories found right now.</div>`;
+        }
+    }
+    refreshIcons();
+}
+
+function createHeroCardHTML(post) {
+    const image = getDirectDriveUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000';
+    const dateStr = new Date(post.createdAt).toLocaleDateString();
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = post.description;
+    let plainText = tempDiv.textContent || tempDiv.innerText || "";
+    if (plainText.length > 150) plainText = plainText.substring(0, 150) + '...';
+
+    return `
+        <a href="article.html?id=${post.id}" class="hero-card">
+            <div class="hero-image-wrapper">
+                <img src="${image}" alt="Featured Post" class="hero-image">
+                <div class="category-badge">Latest</div>
+            </div>
+            <div class="hero-content">
+                <div class="post-meta">
+                    <span class="author">By ${post.userEmail}</span>
+                    <span class="dot">•</span>
+                    <span class="date">${dateStr}</span>
+                </div>
+                <h1 class="hero-title">${post.title}</h1>
+                <p class="hero-excerpt">${plainText}</p>
+            </div>
+        </a>
+    `;
 }
 
 function createNewsCard(post) {
     const article = document.createElement('article');
     article.className = 'news-card';
-    const image = post.imageUrl || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800';
+    const image = getDirectDriveUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800';
     const dateStr = new Date(post.createdAt).toLocaleDateString();
 
     const tempDiv = document.createElement('div');
@@ -373,20 +453,120 @@ function createNewsCard(post) {
     if (plainText.length > 100) plainText = plainText.substring(0, 100) + '...';
 
     article.innerHTML = `
-        <a href="#" class="card-image-link" onclick="event.preventDefault()">
+        <a href="article.html?id=${post.id}" class="card-image-link">
             <img src="${image}" alt="Upload Media" class="card-image">
-            <div class="category-badge small">News</div>
+            <div class="category-badge small">Startup News</div>
         </a>
         <div class="card-content">
             <div class="post-meta">
                 <span class="date">${dateStr}</span> • <span>${post.userEmail}</span>
             </div>
-            <h3 class="card-title"><a href="#" onclick="event.preventDefault()">${post.title}</a></h3>
+            <h3 class="card-title"><a href="article.html?id=${post.id}">${post.title}</a></h3>
             <p class="card-excerpt">${plainText}</p>
-            <a href="#" class="read-more" onclick="event.preventDefault()">Read article</a>
+            <a href="article.html?id=${post.id}" class="read-more">Read article</a>
         </div>
     `;
     return article;
+}
+
+// -----------------------------------------
+// Single Article Rendering
+// -----------------------------------------
+async function renderArticlePage() {
+    const container = document.getElementById('dynamicArticleContainer');
+    if (!container) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+
+    if (!postId) {
+        container.innerHTML = `<div class="empty-state">Article not found.</div>`;
+        return;
+    }
+
+    let hasRenderedCache = false;
+    const cachedPostsJSON = localStorage.getItem('sj_posts_cache');
+    if (cachedPostsJSON) {
+        try {
+            const cachedPosts = JSON.parse(cachedPostsJSON);
+            const post = cachedPosts.find(p => p.id === postId);
+            if (post) {
+                renderSinglePostHTML(post, container);
+                hasRenderedCache = true;
+            }
+        } catch(e) {}
+    }
+
+    try {
+        const response = await fetchAPI('getPosts');
+        if (response.success && response.posts) {
+            localStorage.setItem('sj_posts_cache', JSON.stringify(response.posts));
+            const post = response.posts.find(p => p.id === postId);
+            if (post) {
+                renderSinglePostHTML(post, container);
+            } else if (!hasRenderedCache) {
+                container.innerHTML = `<div class="empty-state">Article not found or pending approval.</div>`;
+            }
+        } else if (!hasRenderedCache) {
+            container.innerHTML = `<div class="empty-state">Failed to load article.</div>`;
+        }
+    } catch (e) {
+        if (!hasRenderedCache) {
+            container.innerHTML = `<div class="empty-state" style="color:var(--error)">Error loading article.</div>`;
+        }
+    }
+}
+
+function renderSinglePostHTML(post, container) {
+    const image = getDirectDriveUrl(post.imageUrl) || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000';
+    const dateStr = new Date(post.createdAt).toLocaleDateString();
+
+    let vidBlock = '';
+    if (post.videoUrl) {
+         if (post.videoUrl.startsWith('data:video')) {
+             vidBlock = `<video controls src="${post.videoUrl}" style="width:100%; max-height:400px; margin:2rem 0; border-radius: var(--radius-md)"></video>`;
+         } else {
+             vidBlock = `<div style="margin: 2rem 0; padding: 1.5rem; background: var(--bg-surface-hover); border-radius: var(--radius-md); text-align: center;">
+                 <h3 style="margin-bottom: 0.5rem;">Attached Media</h3>
+                 <a href="${post.videoUrl}" target="_blank" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:0.5rem;"><i data-lucide="play-circle"></i> View Video</a>
+             </div>`;
+         }
+    }
+
+    container.innerHTML = `
+        <header class="article-header">
+            <div class="category-badge">Startup News</div>
+            <h1 class="article-title">${post.title}</h1>
+            <p class="article-subtitle">${post.caption || ''}</p>
+            
+            <div class="article-meta">
+                <div class="author-info">
+                    <div class="author-details">
+                        <span class="author-name">By ${post.userEmail}</span>
+                    </div>
+                </div>
+                <div class="publish-info">
+                    <span class="date">Published ${dateStr}</span>
+                </div>
+                <div class="share-actions">
+                    <button class="icon-btn" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(window.location.href), '_blank')"><i data-lucide="twitter"></i></button>
+                    <button class="icon-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(window.location.href), '_blank')"><i data-lucide="linkedin"></i></button>
+                    <button class="icon-btn" aria-label="Copy Link" onclick="navigator.clipboard.writeText(window.location.href); showToast('Link copied!')"><i data-lucide="link"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <figure class="article-featured-image">
+            <img src="${image}" alt="Article Image">
+        </figure>
+
+        <div class="article-body">
+            <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-primary); white-space: pre-wrap;">${post.description}</div>
+            ${vidBlock}
+        </div>
+    `;
+    document.title = `${post.title} | Startup Journal`;
+    refreshIcons();
 }
 
 // -----------------------------------------
@@ -487,8 +667,9 @@ function openPreviewModal(id) {
     
     // Check if the uploaded file is a true base64 or empty/mock URL for local testing
     let imgBlock = '';
-    if (post.imageUrl) {
-        imgBlock = `<img src="${post.imageUrl}" style="width:100%; max-height:300px; object-fit:contain; margin-bottom:1rem; border-radius:var(--radius-sm)">`;
+    const safeImageUrl = getDirectDriveUrl(post.imageUrl);
+    if (safeImageUrl) {
+        imgBlock = `<img src="${safeImageUrl}" style="width:100%; max-height:300px; object-fit:contain; margin-bottom:1rem; border-radius:var(--radius-sm)">`;
     }
 
     let vidBlock = '';
@@ -528,4 +709,55 @@ async function handleModeration(action, id) {
     } else {
         showToast(response.error || 'Moderation action failed', 'error');
     }
+}
+
+// -----------------------------------------
+// Contact Form Logic
+// -----------------------------------------
+function initContactForm() {
+    const contactForm = document.getElementById('contactUsForm');
+    if (!contactForm) return;
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('contactSubmitBtn');
+        const spinner = btn.querySelector('.spinner');
+        const text = btn.querySelector('.btn-text');
+        
+        text.style.display = 'none';
+        spinner.style.display = 'block';
+        
+        const formData = new FormData(contactForm);
+        const data = Object.fromEntries(formData.entries());
+        data.action = 'submitContact';
+        
+        try {
+            const CONTACT_API_URL = 'https://script.google.com/macros/s/AKfycbypseFUFJ49sy-Vh6udFIbSwLkqzFovboNpbPr4axg_krQbl-RzN8NhPjIuXrFAzhHXTA/exec';
+            const response = await fetch(CONTACT_API_URL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                contactForm.reset();
+                const successModal = document.getElementById('contactSuccessModal');
+                if (successModal) {
+                    successModal.classList.add('show');
+                    document.getElementById('closeContactSuccessBtn').addEventListener('click', () => {
+                        successModal.classList.remove('show');
+                    });
+                }
+            } else {
+                showToast('Failed to send message.', 'error');
+            }
+        } catch (err) {
+            console.error(err);
+            showToast('Network error while sending message.', 'error');
+        }
+        
+        text.style.display = 'block';
+        spinner.style.display = 'none';
+    });
 }

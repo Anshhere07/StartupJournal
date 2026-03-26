@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article | Startup Journal</title>
+    <title>Contact Us | Startup Journal</title>
     <meta name="description" content="Get the latest news, insights, and analysis from the world of startups, technology, and entrepreneurship.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,9 +24,9 @@
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="latest.html" class="nav-link">Latest News</a>
-                <a href="startup.html" class="nav-link" class="active">Startup News</a>
+                <a href="startup.html" class="nav-link">Startup News</a>
                 <a href="about.html" class="nav-link">About Us</a>
-                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="contact.html" class="nav-link" class="active">Contact</a>
             </nav>
 
             <!-- Right: Account -->
@@ -56,23 +56,72 @@
         <div class="mobile-dropdown">
             <a href="index.html" class="nav-link">Home</a>
             <a href="latest.html" class="nav-link">Latest News</a>
-            <a href="startup.html" class="nav-link" class="active">Startup News</a>
+            <a href="startup.html" class="nav-link">Startup News</a>
             <a href="about.html" class="nav-link">About Us</a>
-            <a href="contact.html" class="nav-link">Contact</a>
+            <a href="contact.html" class="nav-link" class="active">Contact</a>
             <button class="btn btn-outline" id="mobileAuthBtn" style="margin-top: 1rem;">Login</button>
         </div>
     </header>
 
     <main class="main-content">
 
-    <!-- Dynamic Article Container -->
-    <article class="single-article article-page wrapper" id="dynamicArticleContainer" style="max-width: 900px;">
-        <!-- Loading State -->
-        <div class="empty-state" style="border:none; padding:4rem 0;">
-            <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
-            <p>Loading article...</p>
+    <div class="wrapper contact-page-container" style="display: flex; gap: 4rem; padding: 4rem 0; align-items: center; min-height: 70vh;">
+        
+        <!-- Left 50% -->
+        <div class="contact-left" style="flex: 1; padding-right: 2rem;">
+            <div class="contact-animation" style="margin-bottom: 2rem;">
+                <div style="font-size: 4rem; color: var(--accent-primary); animation: bounce 2s infinite;"><i data-lucide="send" style="width: 80px; height: 80px;"></i></div>
+            </div>
+            <h1 style="font-family: var(--font-serif); font-size: 3rem; color: var(--accent-primary); margin-bottom: 1rem; line-height: 1.1;">Let's talk about your startup.</h1>
+            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">Whether you have a groundbreaking story pitch, feedback on our coverage, or simply want to say hello, our inbox is always open.</p>
         </div>
-    </article>
+        
+        <!-- Right 50% -->
+        <div class="contact-right" style="flex: 1;">
+            <form id="contactUsForm" style="background: var(--bg-surface); padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border-light);">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Jane Doe" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-medium); border-radius: var(--radius-sm);">
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email Address</label>
+                    <input type="email" name="email" class="form-control" placeholder="jane@startup.com" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-medium); border-radius: var(--radius-sm);">
+                </div>
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
+                    <textarea name="message" class="form-control" rows="5" placeholder="How can we help you?" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-medium); border-radius: var(--radius-sm);"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="contactSubmitBtn" style="width: 100%; padding: 1rem; font-size: 1.1rem; justify-content: center; align-items: center; display: flex;">
+                    <span class="btn-text">Send Message</span>
+                    <div class="spinner" style="display: none; border-top-color: white;"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Success Modal -->
+    <div class="modal-overlay" id="contactSuccessModal">
+        <div class="modal-container" style="max-width: 400px; text-align: center;">
+            <div style="font-size: 4rem; color: var(--success); margin-bottom: 1rem; display:flex; justify-content:center;">
+                <i data-lucide="check-circle" style="width: 64px; height: 64px; margin: 0 auto;"></i>
+            </div>
+            <h2 class="modal-title" style="margin-bottom: 0.5rem; font-family: var(--font-serif); font-size: 1.75rem;">Successfully Submitted!</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Thank you for getting in touch. We will review your message and get back to you shortly.</p>
+            <button class="btn btn-primary" id="closeContactSuccessBtn" style="width: 100%; justify-content: center;">Awesome</button>
+        </div>
+    </div>
+    
+    <style>
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+    @media (max-width: 768px) {
+        .contact-page-container { flex-direction: column; text-align: center; gap: 2rem; }
+        .contact-left { padding-right: 0; }
+        .contact-animation { display: flex; justify-content: center; }
+    }
+    </style>
 
 </main>
 

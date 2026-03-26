@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article | Startup Journal</title>
+    <title>Latest News | Startup Journal</title>
     <meta name="description" content="Get the latest news, insights, and analysis from the world of startups, technology, and entrepreneurship.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,8 @@
             <!-- Center: Navigation -->
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link">Home</a>
-                <a href="latest.html" class="nav-link">Latest News</a>
-                <a href="startup.html" class="nav-link" class="active">Startup News</a>
+                <a href="latest.html" class="nav-link" class="active">Latest News</a>
+                <a href="startup.html" class="nav-link">Startup News</a>
                 <a href="about.html" class="nav-link">About Us</a>
                 <a href="contact.html" class="nav-link">Contact</a>
             </nav>
@@ -55,8 +55,8 @@
         <!-- Mobile Dropdown Menu -->
         <div class="mobile-dropdown">
             <a href="index.html" class="nav-link">Home</a>
-            <a href="latest.html" class="nav-link">Latest News</a>
-            <a href="startup.html" class="nav-link" class="active">Startup News</a>
+            <a href="latest.html" class="nav-link" class="active">Latest News</a>
+            <a href="startup.html" class="nav-link">Startup News</a>
             <a href="about.html" class="nav-link">About Us</a>
             <a href="contact.html" class="nav-link">Contact</a>
             <button class="btn btn-outline" id="mobileAuthBtn" style="margin-top: 1rem;">Login</button>
@@ -65,14 +65,12 @@
 
     <main class="main-content">
 
-    <!-- Dynamic Article Container -->
-    <article class="single-article article-page wrapper" id="dynamicArticleContainer" style="max-width: 900px;">
-        <!-- Loading State -->
-        <div class="empty-state" style="border:none; padding:4rem 0;">
+    <!-- Hero Section -->
+    <section class="hero-section wrapper" id="dynamicHeroSection">
+        <div class="empty-state" style="border:none; background:transparent;">
             <div class="spinner" style="border-top-color: var(--accent-primary); margin: 0 auto 1rem;"></div>
-            <p>Loading article...</p>
         </div>
-    </article>
+    </section>
 
 </main>
 
